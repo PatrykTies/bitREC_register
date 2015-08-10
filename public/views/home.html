@@ -10,19 +10,63 @@
   
 
   <div class="container" ng-switch='home.step'>
-     <form method='post' enctype='multipart/form-data' ng-submit='home.doSignup()' class="col s12">
-      <div class="row" ng-switch-when="1">
+    
+    <div class="row" ng-switch-when="1">
+      <div class="col s12 center">
+         <h1>Select your prefered language</h1>
+         <h1>Wybież jezyk ktory bardziej ci odpowiada.</h1>
+      </div>
+      <div class="row">
+        <div class="col s12 m3 l3 offset-l1">
+          <a ng-click="advanceLanguage('en')"><img src="./img/gb2.svg" alt="britishflag"></a>
+         <h6 class="center">English</h6>
+        </div>
+        <div class="col s12 m3 l3">
+          <a ng-click="advanceLanguage('pl')"><img src="./img/pl.svg" alt="polishflag"></a>
+          <h6 class="center">Polski</h6>
+        </div>
+        <div class="col s12 m3 l3">
+          <a ng-click="advanceLanguage('ro')"><img src="./img/ro.svg" alt="romanianflag"></a>
+          <h6 class="center">Română</h6>
+        </div>
+      </div>
+     
+      
+       
+     
+
+    </div>
+    <div class="row" ng-switch-when="2">
+      <div class="col s12 center">
+         <h1 translate>SKILLS</h1>
+
+
+         <button class="btn waves-effect waves-light" ng-click="advance()" ng-disabled="is all data filled in?">
+                  {{'NEXT_PAGE' | translate}}<i class="material-icons">send</i>
+         </button>
+         <button class="btn waves-effect waves-light" ng-click="goback()" ng-disabled="is all data filled in?">
+          <i class="material-icons">send</i>{{'PREV_PAGE' | translate}} 
+         </button>    
+      </div>
+     
+
+    </div> 
+
+
+
+    <form method='post' enctype='multipart/form-data' ng-submit='home.doSignup()' class="col s12">
+      <div class="row" ng-switch-when="3">
        
           <div class="row">
             <div class="input-field col s12 m6 l4">
               <i class="material-icons prefix">account_circle</i>
               <input id="icon_prefix" type="text" class="validate" ng-model='jobseeker.first_name'>
-              <label for="icon_prefix">First Name</label>
+              <label for="icon_prefix" translate>FIRST_NAME</label>
             </div>
             <div class="input-field col s12 m6 l4">
               <i class="material-icons prefix">account_circle</i>
               <input id="icon_lastname" type="text" class="validate" ng-model='jobseeker.last_name'>
-              <label for="icon_lastname">Last Name</label>
+              <label for="icon_lastname" translate>LAST_NAME</label>
             </div>
           </div>
 
@@ -30,12 +74,12 @@
             <div class="input-field col s12 m6 l4">
               <i class="material-icons prefix">email</i>
               <input id="icon_email" type="email" class="validate" ng-model='jobseeker.email_id'>
-              <label for="icon_email">Email Address</label>
+              <label for="icon_email" translate>EMAIL</label>
             </div>       
             <div class="input-field col s12 m6 l4">
               <i class="material-icons prefix">email</i>
               <input id="icon_reemail" type="email" class="validate" ng-model='home.reemail'>
-              <label for="icon_reemail">Re-enter email</label>
+              <label for="icon_reemail" translate>RE_EMAIL</label>
             </div>
           </div>
 
@@ -43,7 +87,7 @@
             <div class="input-field col s12 m6 l4">
               <i class="material-icons prefix">today</i>
                <select form-select ng-model='jobseeker.age'>
-                  <option value="" disabled selected>How old are you?</option>
+                  <option value="" disabled selected>0</option>
                   <option value="18">18</option>
                   <option value="19">19</option>
                   <option value="20">20</option>
@@ -86,7 +130,7 @@
                   <option value="57">57</option>
 
                 </select>
-                <label>Your age</label>
+                <label translate>AGE_LABEL</label>
             
              </div>
              <div class="input-field col s12 m6 l4">
@@ -342,14 +386,17 @@
              
                 
         
-             <button class="btn waves-effect waves-light" ng-click="advance()" ng-disabled="is all data filled in?">
-                Next Step <i class="material-icons">send</i>
-              </button>   
+         <button class="btn waves-effect waves-light" ng-click="advance()" ng-disabled="is all data filled in?">
+            Next Step <i class="material-icons">send</i>
+         </button> 
+          <button class="btn waves-effect waves-light" ng-click="goback()" ng-disabled="is all data filled in?">
+          <i class="material-icons">send</i>Step back 
+         </button>      
        
     </div> 
      
 
-       <div class="row" ng-switch-when="2">
+       <div class="row" ng-switch-when="4">
          
            <h4 class="center">Please tell us when can you start working ?</h4>
            
@@ -432,7 +479,7 @@
            
         </div>
 
-        <div class="row" ng-switch-when="3">
+        <div class="row" ng-switch-when="5">
          
            
             <h4 class="center">Describe you English Language communication skills</h4>

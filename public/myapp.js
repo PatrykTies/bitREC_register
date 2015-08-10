@@ -1,9 +1,9 @@
 (function(){
   'use strict';
 
-var app = angular.module('myapp', ['ui.router','ngAnimate']);
+var app = angular.module('myapp', ['ui.router','ngAnimate','pascalprecht.translate']);
 
-app.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
+app.config(['$urlRouterProvider', '$stateProvider', '$translateProvider', function($urlRouterProvider, $stateProvider, $translateProvider) {
     $urlRouterProvider.otherwise('home');
     $stateProvider
       .state('home', {
@@ -42,6 +42,13 @@ app.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider,
         templateUrl: 'views/register.html',
         controller: 'registerCtrl as register'
       });
+    
+      $translateProvider.useUrlLoader('api/translations');
+      $translateProvider.preferredLanguage('en');
+      //$translateProvider.fallbackLanguage('en');
+    
+
+
       
 }]);
 

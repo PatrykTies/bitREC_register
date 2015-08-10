@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/PatrykTies/bitREC_register",
   "dependencies": {
+    "JSONStream": "^1.0.4",
     "body-parser": "^1.13.2",
     "bower": "^1.4.1",
+    "event-stream": "^3.3.1",
     "express": "^4.13.1",
     "morgan": "^1.6.1",
     "multer": "^1.0.1",

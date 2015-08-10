@@ -1,6 +1,6 @@
 (function(){
 
-	angular.module('myapp').controller('homeCtrl', ['$scope','Jobseeker', 'multipartForm',function($scope, Jobseeker, multipartForm){
+	angular.module('myapp').controller('homeCtrl', ['$scope','Jobseeker', 'multipartForm', '$translate',function($scope, Jobseeker, multipartForm, $translate){
 		'use strict';
 
 		var home = this;
@@ -13,6 +13,15 @@
 		$scope.goback = function () {
 			if(home.step != 1) home.step--; 
 		};
+		$scope.advance = function () {
+		      home.step++;
+		};
+		$scope.advanceLanguage = function (langKey) {
+
+		    $translate.use(langKey);
+		    home.step++;
+		 };
+
 		
 	    
 		/*$scope.$watch('jobseeker.file' , function(newValue, oldValue){

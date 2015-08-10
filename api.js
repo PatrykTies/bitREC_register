@@ -1,55 +1,166 @@
-module.exports = function(app, express){
-	var multer = require('multer');
-	var fs = require('fs');
-	var api = express.Router();
+(function(){
+	module.exports = function(app, express){
+		var multer = require('multer');
+		var fs = require('fs');
+		var api = express.Router();
 
-	var upload = multer({ 
-		dest: './uploads/',
-		limits: {
-       	   fileSize: 5000000
-    	},
-		
-	});
-
-	api.post('/signup', upload.single('file'), function(req,res){
-		 /** When using the "single"
-      data come in "req.file" regardless of the attribute "name". **/
-	  var tmp_path = req.file.path;
-
-	  /** The original name of the uploaded file
-	      stored in the variable "originalname". **/
-	  var target_path = './uploads/' + req.file.originalname;
-
-	  /** A better way to copy the uploaded file. **/
-	  var src = fs.createReadStream(tmp_path);
-	  var dest = fs.createWriteStream(target_path);
-	  src.pipe(dest);
-	  src.on('end', function() { console.log('completed!'); });
-	  src.on('error', function(err) { res.render('error'); });
-
-		var jobseekerDao = require('./jobseekerDao.js');
-		//console.log('text data arrived in api' + req.body + req.file);
-		
-		jobseekerDao.jobseekerDao.createJobseeker(req.body,  target_path, function(status){
-			res.json(status);
-			console.log(status);
-		});
-			
-
-	});
-
-	api.get('/jobseekers', function(req,res){
-
-		var jobseekerDao = require('./jobseekerDao.js');
-
-		jobseekerDao.jobseekerDao.getAllJobseekers(function(jobseekers){
-
-			console.log(jobseekers);
-			res.json({jobseekers : jobseekers});
-			
+		var storage = multer.diskStorage({
+		  destination: function (req, file, cb) {
+		    cb(null, './uploads/');
+		  },
+		  filename: function (req, file, cb) {
+		    cb(null, file.originalname);
+		  }
+		 
 		});
 
-	});
+		var upload = multer({ storage: storage });
 
-	return api;
-};
+		/*var upload = multer({ 
+			dest: './uploads/',
+			limits: {
+	       	   fileSize: 5000000
+	    	},
+			
+		});*/
+
+		api.post('/signup', upload.single('file'), function(req,res){
+
+			var resumeurl;
+
+			if(req.file){
+				resumeurl = req.file.path;
+			}else resumeurl = 'null';
+
+			var jobseekerDao = require('./jobseekerDao.js');
+			//console.log('text data arrived in api' + req.body + req.file);
+			
+			jobseekerDao.jobseekerDao.createJobseeker(req.body, resumeurl, function(status){
+				res.json(status);
+				console.log(status);
+			});
+				
+
+		});
+
+		api.get('/jobseekers', function(req,res){
+
+			var jobseekerDao = require('./jobseekerDao.js');
+
+			jobseekerDao.jobseekerDao.getAllJobseekers(function(jobseekers){
+
+				console.log(jobseekers);
+				res.json({jobseekers : jobseekers});
+				
+			});
+
+		});
+		/*
+		api.get('/translations', function(req,res){
+			
+				var dupa = function(){
+					return 'Wybiez swoje umiejetnosci zawodowe.';
+				};
+
+				var lang = req.query.lang;
+				if(lang === 'pl'){
+					res.json({
+
+						
+					        SKILLS: 'Wybiez swoje umiejetnosci zawodowe.',
+					        PARAGRAPH: 'Ernsthaft!',
+					        PASSED_AS_TEXT: 'Hey! Ich wurde als text übergeben!',
+					        PASSED_AS_ATTRIBUTE: 'Ich wurde als Attribut übergeben, cool oder?',
+					        PASSED_AS_INTERPOLATION: 'Anfänger! Ich bin interpoliert!',
+					        VARIABLE_REPLACEMENT: 'Hi {{name}}',
+					        // MISSING_TRANSLATION is ... missing :)
+					        BUTTON_LANG_DE: 'deutsch',
+					        BUTTON_LANG_EN: 'englisch'
+					    
+					   
+				 	   
+				      }); 
+				}
+				else if(lang === 'en'){
+					res.json({
+
+						
+					        SKILLS: 'dfgdfgdghdfghdhdhhdhddhdhdfhdhdhh',
+					        PARAGRAPH: 'Ernsthaft!',
+					        PASSED_AS_TEXT: 'Hey! Ich wurde als text übergeben!',
+					        PASSED_AS_ATTRIBUTE: 'Ich wurde als Attribut übergeben, cool oder?',
+					        PASSED_AS_INTERPOLATION: 'Anfänger! Ich bin interpoliert!',
+					        VARIABLE_REPLACEMENT: 'Hi {{name}}',
+					        // MISSING_TRANSLATION is ... missing :)
+					        BUTTON_LANG_DE: 'deutsch',
+					        BUTTON_LANG_EN: 'englisch'
+					    
+					   
+				 	   
+				      }); 
+				}
+	
+		});*/
+
+		api.get('/translations', function(req,res){
+
+			var fs = require('fs'),
+				JSONStream = require('JSONStream'),
+				es = require('event-stream');
+			
+			var query = req.query.lang;
+			
+			var getStream = function(){
+				var jsonData = 'translations.json',
+					stream = fs.createReadStream(jsonData, {encoding:'utf8'}),
+					parser = JSONStream.parse(['lang',true,query]);
+					return stream.pipe(parser);
+			};
+
+			getStream().pipe(es.mapSync(function(data){
+			
+				res.json(data);
+			}));
+
+			
+			/*
+			if(query === 'pl'){
+				res.json(
+				   data.lang[0].pl
+				);
+			}*/
+	
+		});
+
+
+		return api;
+	};
+}());
+
+/*
+		{
+			"en": {
+				SKILLS: 'Select your work skills',
+		        PARAGRAPH: 'Ernsthaft!',
+		        PASSED_AS_TEXT: 'Hey! Ich wurde als text übergeben!',
+		        PASSED_AS_ATTRIBUTE: 'Ich wurde als Attribut übergeben, cool oder?',
+		        PASSED_AS_INTERPOLATION: 'Anfänger! Ich bin interpoliert!',
+		        VARIABLE_REPLACEMENT: 'Hi {{name}}',
+		        // MISSING_TRANSLATION is ... missing :)
+		        BUTTON_LANG_DE: 'deutsch',
+		        BUTTON_LANG_EN: 'englisch'
+			}
+		},
+		{
+			"ro": {
+				SKILLS: 'sdgfsfsdfsdfsfsfr sfsf  fsfs ',
+		        PARAGRAPH: 'Ernsthaft!',
+		        PASSED_AS_TEXT: 'Hey! Ich wurde als text übergeben!',
+		        PASSED_AS_ATTRIBUTE: 'Ich wurde als Attribut übergeben, cool oder?',
+		        PASSED_AS_INTERPOLATION: 'Anfänger! Ich bin interpoliert!',
+		        VARIABLE_REPLACEMENT: 'Hi {{name}}',
+		        // MISSING_TRANSLATION is ... missing :)
+		        BUTTON_LANG_DE: 'deutsch',
+		        BUTTON_LANG_EN: 'englisch'
+			}
+		}*/
