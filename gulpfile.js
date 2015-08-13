@@ -64,7 +64,7 @@ gulp.task('compass', function() {
 });
 
 gulp.task('nodemon', function () {
-  nodemon({ script: 'server.js',
+  nodemon({ script: 'devserver.js',
           ext: 'html js',
           ignore: ['ignored.js'],
           tasks: ['jshint'] })
