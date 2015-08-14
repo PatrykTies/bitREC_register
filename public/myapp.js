@@ -53,17 +53,5 @@ app.config(['$urlRouterProvider', '$stateProvider', '$translateProvider', functi
 }]);
 
 
-app.factory('Quiz', function(){
-  var data =[
-      {q:'Jestes gotowy/a ?',a:'tak'},
-      {q:'2+2?',a:'4'}
-    ];
-  return {
-    getData: function(){
-      return data;
-    }
-  }
-});
-
 }());
 

@@ -17,5 +17,9 @@
   ],
   "dependencies": {
     "angular-translate": "~2.7.2"
+  },
+  "resolutions": {
+    "angular-animate": "~1.4.3",
+    "angular": ">= 1.0.8"
   }
 }
