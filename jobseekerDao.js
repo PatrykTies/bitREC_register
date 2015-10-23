@@ -1,13 +1,21 @@
+
+/********************************************  THIS IS NODE.JS API RELATED   *******************************************************/
 (function(){
 
 	var dbConnection = require('./dbConnection.js');
 	var totalScore = require('./totalScore.js');
 
+	var companyAndCampaignObj = {};
+	var companyIDObj = {};
+	var jobseekerPositionType = {};
+
+
 	var jobseekerDao = {
 
 		createJobseeker : function(jobseeker, resumeurl, OnSuccessfulCallback){
 
-
+			
+			console.log('from createJobseeker '+ companyAndCampaignObj.campaign);
 
 			var timestamp = function() { 
 				    var d = new Date(Date.now()),
@@ -66,14 +74,11 @@
 				return totalScore;
 			};
 
-			/*totalScore.totalScore.getScore(jobseeker, function(scores){
-					console.log(scores + 'fsdfsfs');
-					return scores;
-			});*/
-
 			console.log('TOTAL SCORE FOR THIS JOBSEEKER IS: ' + totalScore());
 
-			var insertStatement = "INSERT INTO jobseeker SET?";
+			
+			
+			//var insertStatement = "INSERT INTO jobseeker SET?";
 			var jobseekerObj = {
 
 				first_name: jobseeker.first_name,
@@ -93,19 +98,57 @@
 				
 			};
 
+			var jobseekerCampaign = {campaign_id: jobseeker.campaign_id};
+
 			var connection = dbConnection.dbConnection.getMysqlConnection();
 
 			if(connection){
+				connection.beginTransaction(function(err){
+					if(err) {throw err;}
 
-				connection.query(insertStatement, jobseekerObj, function(err, result){
+					connection.query("INSERT INTO jobseeker SET?", jobseekerObj, function(err, result){
 
-					if(err){throw err;}
-					OnSuccessfulCallback({status: 'Successfuly inserted into MySQL!'});
-					console.log(result);
+						if(err){					
+							return connection.rollback(function(){
+								throw err;
+							});
+						}
+						var jobseeker_id = result.insertId;
+						
+						//THIS IS OBJECT CREATED FOR MYSQL INSERT
+						var jobseeker_status = {jobseeker_id: jobseeker_id, 
+												company_id: companyIDObj.company, 
+												campaign_id: companyAndCampaignObj.campaign,
+												position_id: jobseekerPositionType.position
+											   };
+
+						connection.query("INSERT INTO jobseeker_status SET?",
+									     jobseeker_status,									 
+										 function(err, result){
+							if(err){					
+								return connection.rollback(function(){
+									throw err;
+								});
+							}
+							connection.commit(function(err){
+								if(err){					
+									return connection.rollback(function(){
+										throw err;
+									});
+								}
+								
+								console.log('Successfuly inserted into MySQL!');
+								dbConnection.dbConnection.closeMysqlConnection(connection);
+							});
+
+						});
+						
+					});
+
+						
 				});
-
-				dbConnection.dbConnection.closeMysqlConnection(connection);
-			}
+				
+			}	
 		},
 
 		getAllJobseekers : function(callback){
@@ -126,8 +169,60 @@
 			}
 
 
+		},
+	
+
+		setCampaign : function(campaign, callback){
+
+			var selectedCampaign = campaign.campaign;
+
+			var message = "JobseekerServer " + selectedCampaign;
+			
+
+			//---------------------------------------------------------
+			companyAndCampaignObj = {campaign: selectedCampaign}; 
+			console.log(companyAndCampaignObj.campaign);
+			//NOW I MUST QUERY campaign TABLE WHERE campaign_id == companyAndCampaignObj.campaign and select its company_id
+			var queryStatement = "SELECT company_id FROM campaigns WHERE campaign_id =?";
+			var connection = dbConnection.dbConnection.getMysqlConnection();
+
+			if(connection){
+
+				connection.query(queryStatement, [companyAndCampaignObj.campaign] ,function(err, result){
+
+					if(err){
+						throw err;
+					}
+
+					
+					companyIDObj = {company: result[0].company_id};
+
+					callback({status: companyIDObj.company});
+						
+				});
+
+				dbConnection.dbConnection.closeMysqlConnection(connection);
+			}
+
+		},
+
+		setPosition : function(position, callback){
+
+			var selectedPosition = position.position;
+
+			var message = "JobseekerServer " + selectedPosition;
+			
+
+			//---------------------------------------------------------
+			jobseekerPositionType = {position: selectedPosition}; 
+			console.log('Position inside jobseekerDAO: ' + jobseekerPositionType.position);
+			
+
 		}
+
+
 	};
+	
 
 	module.exports.jobseekerDao = jobseekerDao;
 

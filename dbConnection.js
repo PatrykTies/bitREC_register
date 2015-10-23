@@ -16,8 +16,7 @@ var mysql = require('mysql'),
 					if(err){throw err;}
 					console.log('Connection with DB closed.');
 				});
-			};
+			}
 		}
-	}
-
+	};
 module.exports.dbConnection = dbConnection;

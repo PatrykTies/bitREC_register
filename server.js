@@ -4,8 +4,8 @@
 var https = require('https');
 var http = require('http');
 var path = require('path');
-var port = process.argv[2] || 443;
-var insecurePort = process.argv[3] || 8080;
+var port = process.argv[2] || 8043;
+var insecurePort = process.argv[3] || 3000;
 var fs = require('fs');
 var path = require('path');
 var checkip = require('check-ip-address');

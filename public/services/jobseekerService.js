@@ -1,7 +1,9 @@
+
+/*******************	THIS IS ANGULAR.JS RELATED   *****************************/
 (function(){
 	angular.module('myapp')
 
-	.factory('Jobseeker', ['$http', function($http){
+	.factory('Jobseeker', ['$http', function($http){ /*******************	THIS IS POSTING TO NODE.JS API DIRECTLY   *****************************/
 		'use strict';
 		var jobseekerFactory = {};
 
@@ -21,6 +23,38 @@
 				transformRequest: angular.identity,
 				headers: {'Content-Type': undefined}
 			});
+				
+			
+		};
+
+		jobseekerFactory.campaign = function(jobseekerCampaign){
+
+			
+			
+			console.log('Service received campaign selected: ' + jobseekerCampaign); 
+			
+			$http.post('/api/setcampaign', {campaign: jobseekerCampaign})	 //THIS STRING NOW IS SAVED IN OBJECT 'campaign'
+			.success(function(data, status, headers){
+				console.log(data);
+			}).error(function(data, status, headers) {
+				console.log( "failure message from Angular POST: " + JSON.stringify({data: data}));
+			});		
+				
+			
+		};
+
+		jobseekerFactory.position = function(jobseekerPosition){
+
+			
+			
+			console.log('Service received position selected: ' + jobseekerPosition); 
+			
+			$http.post('/api/setposition', {position: jobseekerPosition})	 //THIS STRING NOW IS SAVED IN OBJECT 'campaign'
+			.success(function(data, status, headers){
+				console.log(data);
+			}).error(function(data, status, headers) {
+				console.log( "failure message from Angular POST: " + JSON.stringify({data: data}));
+			});		
 				
 			
 		};

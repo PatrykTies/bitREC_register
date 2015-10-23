@@ -81,7 +81,7 @@ gulp.task('serve', ['compass'], function() {
         open:"external"
     });
 
-    gulp.watch("public/scss/**/*.scss", ['compass']);
+    gulp.watch("public/sass/**/*.*", ['compass']);
     gulp.watch("public/views/*.html").on('change', browserSync.reload);
 });
 
@@ -126,7 +126,7 @@ gulp.task('js-concat', function() {
 
 
 
-gulp.task('default', ['jshint','nodemon'], function() { //ADD 'serve' FOR CSS DEVELOPMENT WITH BROWSER_SYNC AND COMPASS
+gulp.task('default', ['jshint','nodemon'/*,'serve'*/], function() { //ADD 'serve' FOR CSS DEVELOPMENT WITH BROWSER_SYNC AND COMPASS
     // Watch the files in the paths object, and when there is a change, fun the functions in the array
     
     gulp.watch(paths.styles.src, ['compass'])

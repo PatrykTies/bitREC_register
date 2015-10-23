@@ -5,7 +5,9 @@
 
 		$scope.pageClass = 'page-home';
 		
-		$scope.scroll = 0;
+       
+		
+		
 
 		
 

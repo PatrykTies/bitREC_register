@@ -15,6 +15,9 @@
       <div class="col s12 center">
          <h1>Select your prefered language</h1>
          <h1>Wybież jezyk ktory bardziej ci odpowiada.</h1>
+        
+
+         
       </div>
       <div class="row">
         <div class="col s12 m3 l3 offset-l1">
@@ -338,22 +341,12 @@
          
            <div class="row">
             <div class="input-field col s12 m6 l4">
-              <select form-select ng-model='jobseeker.jobref'>
-                <option value="" disabled selected>Choose Job Ref Number</option>
-                <option value="Sealoader">Sealoader</option>
-                <option value="Sunmarkloader">Sunmarkloader</option>
-                <option value="#1234">#1234</option>
-              </select>
+              <select form-select ng-model='jobseeker.campaign_id' ng-options="campaign.campaign_id for campaign in campaigns" ng-init="form.type=campaigns[0].value"></select>
               <label>Job reference number</label>
             </div>
             <div class="input-field col s12 m6 l4">
-              <select form-select ng-model='jobseeker.jobposition'>
-                <option value="" disabled selected>Choose job position</option>
-                <option value="Loader">Loader</option>
-                <option value="ForkLifter">ForkLift Driver</option>
-                <option value="WarehouseAssist">Warehouse Assistant</option>
-              </select>
-              <label>Job position you applying for</label>
+               <select form-select ng-model='jobseeker.position' ng-options="position.position_name for position in positions" ng-init="form.type=positions[0].value"></select>
+              <label>Position type</label>
             </div>
           </div>
             

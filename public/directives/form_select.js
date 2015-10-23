@@ -1,16 +1,27 @@
 (function(){
 	'use strict';
 
-	 var form_select = function(){
+	 form_select.$inject = ['$timeout'];
+	 function form_select($timeout){
 
 
+	 	var link = function(s,element,a,ngModel){
+	 			$timeout(create);
 
-	 	//var template = '<div class="col s4"></div>',
+	 			if(ngModel){
+	 				ngModel.$render = create;
+	 			}
+				
+	 			function create(){
 
-	 	var link = function(s,element,a){
+	 				element.material_select();
+	 			}
 	 			
+	 			element.one('$destroy', function(){
+
+	 				element.material_select('$destroy');
+	 			});
 	 			
-	 			element.material_select();
 	 			
 	 			
 	 		};
@@ -20,9 +31,10 @@
 
 			return {	
 				link: link,
-				//template: template
+				
+				require: '?ngModel'
 			};
-		};
+	}
 
 
 

@@ -39,6 +39,37 @@
 				res.json(status);
 				console.log(status);
 			});
+		
+			
+			
+				
+
+		});
+		api.post('/setcampaign', function(req,res){
+
+			
+			console.log(req.body);
+			
+			var jobseekerDao = require('./jobseekerDao.js');
+			
+			jobseekerDao.jobseekerDao.setCampaign(req.body, function(status){
+				res.json(status);
+				console.log(status);
+			});
+				
+
+		});
+
+		api.post('/setposition', function(req,res){
+		
+			console.log(req.body);
+			
+			var jobseekerDao = require('./jobseekerDao.js');
+			
+			jobseekerDao.jobseekerDao.setPosition(req.body, function(status){
+				res.json(status);
+				console.log(status);
+			});
 				
 
 		});
@@ -51,6 +82,31 @@
 
 				console.log(jobseekers);
 				res.json({jobseekers : jobseekers});
+				
+			});
+
+		});
+		
+		api.get('/campaigns', function(req,res){
+
+			var campaignsDao = require('./campaignsDao.js');
+
+			campaignsDao.campaignsDao.getAllCampaigns(function(campaigns){
+
+				console.log(campaigns);
+				res.json(campaigns);
+				
+			});
+
+		});
+		api.get('/positions', function(req,res){
+
+			var positionsDao = require('./positionsDao.js');
+
+			positionsDao.positionsDao.getAllPositions(function(positions){
+
+				console.log(positions);
+				res.json(positions);
 				
 			});
 

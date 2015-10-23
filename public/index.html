@@ -3,6 +3,8 @@
 <head>
 	<base href="/"/>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 	<title>bitREC</title>
 	<!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css">-->
@@ -13,8 +15,15 @@
    
 
 	<link rel="stylesheet" href="/css/style.css">
+
+	<!--Adobe Edge Runtime-->
+    
+    <style>
+        .edgeLoad-EDGE-18874219 { visibility:hidden; }
+    </style>
+	<!--Adobe Edge Runtime End-->
 </head>
-<body scroll>
+<body>
 	<div id='layout'>
 		<header ng-include="'views/header.html'"></header><!-- /header -->
 		<div class='page {{pageClass}}' ui-view></div>
@@ -34,9 +43,12 @@
 	<script src="/angular-translate/angular-translate.min.js"></script>
 	<script src="/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
 	<!--<script src="/components/angular-dynamic-layout/dist/angular-dynamic-layout.min.js"></script>-->
+	<script type="text/javascript" charset="utf-8" src="/edge_includes/edge.3.0.0.min.js"></script>
 
 
 	
+
+
 	
 	<!--<script type="text/javascript" src="js-dist/allscripts.min.js"></script>-->
 	<script src="/myapp.js"></script>
@@ -48,16 +60,26 @@
 	<script src="/controllers/debugCtrl.js"></script>
 
 	<script src="/services/jobseekerService.js"></script>
+	<script src="/services/campaignsService.js"></script>
+	<script src="/services/positionsService.js"></script>
 	<script src="/services/multipartForm.js"></script>
+	
+
+	<script src="/js/scrollify.min.js"></script>
+	<script src="/js/main.js"></script>
 
 
     
 	<script src="/directives/mobile_nav.js"></script>
 	<script src="/directives/gsap.js"></script>
 	<script src="/directives/scroll.js"></script>
+	<script src="/directives/scrollTo.js"></script>
 	<script src="/directives/form_select.js"></script>
 	<script src="/directives/fileModel.js"></script>
 	
+
+	<script type="text/javascript" charset="utf-8" src="myinfographic_edgePreload.js"></script>
+
 
 
 	
